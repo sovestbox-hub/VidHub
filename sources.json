@@ -1,0 +1,57 @@
+[
+  {
+    "_comment": "Шаблон 1 — обычная HTML-страница со списком видео. Замените url и селекторы на свои и поставьте enabled: true. Проверка: python crawler.py --test html_example",
+    "id": "html_example",
+    "name": "Example Tube",
+    "enabled": false,
+    "type": "html",
+    "base_url": "https://example.com",
+    "url": "https://example.com/latest?page={page}",
+    "max_pages": 3,
+    "delay_seconds": 2,
+    "selectors": {
+      "item": ".video-card",
+      "link": "a@href",
+      "title": ".video-title",
+      "thumb": "img@data-src|src",
+      "duration": ".duration",
+      "preview": "img@data-preview"
+    },
+    "details": {
+      "fetch": true,
+      "max_per_run": 30
+    }
+  },
+  {
+    "_comment": "Шаблон 2 — RSS/Atom-лента (самый удобный и «вежливый» вариант). Пространства имён заменяются дефисом: media:thumbnail -> media-thumbnail.",
+    "id": "rss_example",
+    "name": "Example Feed",
+    "enabled": false,
+    "type": "rss",
+    "url": "https://example.com/feed.xml",
+    "selectors": {
+      "item": "item",
+      "thumb": "media-thumbnail@url",
+      "duration": "itunes-duration"
+    },
+    "embed_template": "https://example.com/embed/{id}",
+    "id_regex": "/video/(\\d+)"
+  },
+  {
+    "_comment": "Шаблон 3 — JSON API / партнёрский фид. Пути через точку: thumbs.0.src. В значениях можно использовать шаблоны {поле}.",
+    "id": "json_example",
+    "name": "Example API",
+    "enabled": false,
+    "type": "json",
+    "url": "https://api.example.com/v1/videos?page={page}&per_page=50",
+    "max_pages": 2,
+    "items_path": "data.videos",
+    "fields": {
+      "title": "title",
+      "url": "https://example.com/video/{slug}",
+      "thumb": "thumbs.0.src",
+      "duration": "duration",
+      "embed": "https://example.com/embed/{id}"
+    }
+  }
+]

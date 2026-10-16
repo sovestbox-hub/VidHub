@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{% if q %}{{ q }} — {{ site_name }}{% else %}{{ site_name }} — {{ tagline }}{% endif %}{% endblock %}
+{% block body %}
+<nav class="bar" aria-label="Сортировка и источники">
+  <div class="tabs" id="tabs">
+    <a data-sort="new">Новые</a>
+    <a data-sort="popular">Популярные</a>
+    <a data-sort="long">Длинные</a>
+  </div>
+  <div class="chips" id="chips" aria-label="Источники"></div>
+</nav>
+
+<main class="wrap">
+  <p class="status" id="status" hidden></p>
+  <div class="grid" id="grid" aria-live="polite"></div>
+  <div id="sentinel" aria-hidden="true"></div>
+  <div class="more-wrap"><button class="btn" id="more" type="button" hidden>Показать ещё</button></div>
+  <div class="empty" id="empty" hidden>
+    <h2 id="empty-title">Видео пока нет</h2>
+    <p id="empty-text">Подборка пополняется автоматически. Загляните позже.</p>
+    <a class="btn" id="empty-link" href="/" hidden>Сбросить поиск</a>
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}<script src="/static/js/home.js"></script>{% endblock %}

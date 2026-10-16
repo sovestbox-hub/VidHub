@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
+  <meta name="description" content="{% block desc %}{{ tagline }}{% endblock %}">
+  {% block og %}{% endblock %}
+  <meta name="theme-color" content="#0c1220">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ffb340'/%3E%3Cpath d='M12 9v14l11-7z' fill='%230c1220'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap">
+  <link rel="stylesheet" href="/static/css/style.css">
+  {% block head %}{% endblock %}
+</head>
+<body{% if age_gate %} data-age-gate="1"{% endif %}>
+  <header class="top">
+    <a class="logo" href="/" aria-label="{{ site_name }} — на главную">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><path d="M12 9v14l11-7z"/></svg>
+      <span class="logo-text">{{ site_name }}</span>
+    </a>
+    <form class="search" action="/" method="get" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input id="q" type="search" name="q" value="{{ q or '' }}" placeholder="Найти видео" aria-label="Поиск по названию" autocomplete="off" enterkeyhint="search">
+    </form>
+  </header>
+
+  {% block body %}{% endblock %}
+
+  <footer class="foot">
+    <span>{{ site_name }} собирает ссылки на видео с других сайтов. Все права на видео принадлежат их владельцам.</span>
+  </footer>
+
+  {% if age_gate %}
+  <dialog id="age" class="age" aria-labelledby="age-title">
+    <h2 id="age-title">Вам есть 18 лет?</h2>
+    <p>На сайте есть материалы для взрослых. Нажимая «Да», вы подтверждаете, что достигли совершеннолетия.</p>
+    <div class="age-actions">
+      <button class="btn primary" id="age-yes" type="button">Да, мне есть 18</button>
+      <a class="btn" href="{{ age_exit_url }}" rel="noopener nofollow">Нет, выйти</a>
+    </div>
+  </dialog>
+  {% endif %}
+
+  <script src="/static/js/common.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

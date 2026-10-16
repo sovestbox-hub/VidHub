@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ v.title }} — {{ site_name }}{% endblock %}
+{% block desc %}{{ v.title }} — видео с {{ v.source_name }} на {{ site_name }}{% endblock %}
+{% block og %}
+  <meta property="og:type" content="video.other">
+  <meta property="og:title" content="{{ v.title }}">
+  {% if v.thumb %}<meta property="og:image" content="{{ v.thumb }}">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+{% block head %}<link rel="stylesheet" href="/static/css/player.css">{% endblock %}
+{% block body %}
+<main class="wrap watch">
+  <article class="watch-main">
+    <div id="player" class="stage" data-sandbox="{{ 1 if embed_sandbox else 0 }}"></div>
+    <h1 class="wtitle">{{ v.title }}</h1>
+    <div class="wmeta">
+      <span class="srcpill">{{ v.source_name }}</span>
+      <span id="wviews"></span>
+      <span id="wadded"></span>
+    </div>
+    <div class="wactions">
+      <a class="btn primary" href="{{ v.go }}" target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7z"/></svg>
+        Смотреть на {{ v.source_name }}
+      </a>
+      <button class="btn" id="copy" type="button">Копировать ссылку</button>
+    </div>
+  </article>
+  <aside class="watch-side">
+    <h2 class="side-title">Смотрите также</h2>
+    <div class="side-list" id="related"></div>
+  </aside>
+</main>
+<script type="application/json" id="video-data">{{ v|tojson }}</script>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/player.js"></script>
+<script src="/static/js/watch.js"></script>
+{% endblock %}

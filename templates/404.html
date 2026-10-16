@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Не найдено — {{ site_name }}{% endblock %}
+{% block body %}
+<main class="wrap">
+  <div class="empty">
+    <h2>Такого видео нет</h2>
+    <p>Возможно, оно было удалено или ссылка введена с ошибкой.</p>
+    <a class="btn primary" href="/">Перейти к подборке</a>
+  </div>
+</main>
+{% endblock %}
