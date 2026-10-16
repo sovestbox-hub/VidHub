@@ -1,14 +1,21 @@
 {
-  "site_name": "VidHub",
-  "tagline": "Свежие видео со всего интернета в одном месте",
+  "site_name": "fullpornvid",
+  "tagline": "Подборка видео 18+ со всего интернета",
   "host": "127.0.0.1",
   "port": 8000,
   "click_behavior": "auto",
   "per_page": 24,
-  "age_gate": false,
+  "age_gate": true,
   "embed_sandbox": true,
   "crawl_on_start": true,
   "crawl_interval_minutes": 60,
   "max_videos": 20000,
-  "admin_token": ""
+  "admin_token": "",
+  "blocked_words": [
+    "underage",
+    "child",
+    "minor",
+    "rape",
+    "kidnap"
+  ]
 }

@@ -1,5 +1,25 @@
 [
   {
+    "_comment": "Eporner через официальный Webmasters API v2 (JSON). order: latest | most-popular | top-rated | top-weekly | top-monthly | longest. query: all или слово для поиска.",
+    "id": "eporner",
+    "name": "Eporner",
+    "enabled": true,
+    "type": "json",
+    "base_url": "https://www.eporner.com",
+    "url": "https://www.eporner.com/api/v2/video/search/?query=all&per_page=60&page={page}&thumbsize=big&order=latest&format=json",
+    "max_pages": 3,
+    "delay_seconds": 2,
+    "items_path": "videos",
+    "fields": {
+      "title": "title",
+      "url": "url",
+      "thumb": "default_thumb.src",
+      "duration": "length_sec",
+      "tags": "keywords",
+      "embed": "https://www.eporner.com/embed/{id}"
+    }
+  },
+  {
     "_comment": "Шаблон 1 — обычная HTML-страница со списком видео. Замените url и селекторы на свои и поставьте enabled: true. Проверка: python crawler.py --test html_example",
     "id": "html_example",
     "name": "Example Tube",

@@ -5,8 +5,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEFAULTS = {
-    "site_name": "VidHub",
-    "tagline": "Свежие видео со всего интернета в одном месте",
+    "site_name": "fullpornvid",
+    "tagline": "Подборка видео 18+ со всего интернета",
     "host": "127.0.0.1",
     "port": 8000,
     # auto   — своё окно с плеером, если для видео найден embed/поток, иначе переход на сайт-источник
@@ -23,6 +23,7 @@ DEFAULTS = {
     "request_timeout": 20,
     "force_https_media": True,
     "user_agent": "Mozilla/5.0 (compatible; VidHubBot/1.0)",
+    "blocked_words": [],
     "admin_token": "",
 }
 
@@ -38,6 +39,14 @@ def _read_json(name, default):
 def load_config():
     cfg = dict(DEFAULTS)
     cfg.update(_read_json("config.json", {}))
+    # Хостинги (Render и др.) передают порт и пароль через переменные окружения
+    if os.environ.get("PORT"):
+        cfg["port"] = int(os.environ["PORT"])
+        cfg["host"] = os.environ.get("HOST", "0.0.0.0")
+    elif os.environ.get("HOST"):
+        cfg["host"] = os.environ["HOST"]
+    if os.environ.get("ADMIN_TOKEN"):
+        cfg["admin_token"] = os.environ["ADMIN_TOKEN"]
     if cfg["click_behavior"] not in ("auto", "player", "redirect"):
         raise ValueError("config.json: click_behavior должен быть auto, player или redirect")
     return cfg

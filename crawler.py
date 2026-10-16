@@ -12,6 +12,7 @@
   python crawler.py --test my_site        проверить селекторы, ничего не сохраняя
 """
 import argparse
+import html
 import itertools
 import json
 import logging
@@ -212,7 +213,7 @@ def parse_json(src, content, page_url):
     out = []
     for r in rows:
         url = abs_url(render(f["url"], r), page_url)
-        title = clean(str(render(f["title"], r) or ""))
+        title = clean(html.unescape(str(render(f["title"], r) or "")))
         if not url or not title:
             continue
         out.append({
@@ -223,6 +224,7 @@ def parse_json(src, content, page_url):
             "duration": parse_duration(render(f.get("duration"), r)),
             "embed": abs_url(render(f.get("embed"), r), page_url),
             "stream": abs_url(render(f.get("stream"), r), page_url),
+            "_tags": clean(html.unescape(str(render(f.get("tags"), r) or ""))),  # только для стоп-листа
         })
     return out, len(rows)
 
@@ -394,12 +396,23 @@ def fetch_listing(src, fetcher, first_only=False):
     return items, total_nodes
 
 
+def is_blocked(item, words):
+    hay = (item["title"] + " " + item.get("_tags", "")).casefold()
+    return any(w.casefold() in hay for w in words if w)
+
+
 def collect_source(src, cfg, fetcher):
     """Скачивает листинг, оставляет только новые видео и дособирает детали."""
     items, nodes = fetch_listing(src, fetcher)
     with db.db() as c:
         known = db.existing_urls(c, [i["url"] for i in items])
     new = [i for i in items if i["url"] not in known]
+    words = cfg.get("blocked_words") or []
+    if words:
+        before = len(new)
+        new = [i for i in new if not is_blocked(i, words)]
+        if before != len(new):
+            log.info("  отфильтровано стоп-листом: %d", before - len(new))
 
     cap = int((src.get("details") or {}).get("max_per_run", 40))
     if (src.get("details") or {}).get("fetch"):
